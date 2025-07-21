@@ -2,6 +2,7 @@ package net.skymoe.enchaddons.impl.feature.awesomemap
 
 import net.minecraft.util.ResourceLocation
 import net.skymoe.enchaddons.impl.config.feature.AwesomeMapConfigImpl
+import net.skymoe.enchaddons.impl.feature.awesomemap.awesomeMapPlayerMarker
 import net.skymoe.enchaddons.impl.feature.awesomemap.core.DungeonPlayer
 import net.skymoe.enchaddons.impl.feature.awesomemap.core.map.*
 import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.Dungeon
@@ -421,13 +422,17 @@ data class AwesomeMapWidget(
 
             // Apply scaling
             nvg.scale(vg, Vec2D(1 / tr.scale, 1 / tr.scale))
-            val ttr = Transformation() * tr.scale * config.playerHeadScale.double
+            val headScale = if (config.mapVanillaMarker && (player.isPlayer || name == MC.thePlayer.name)) {
+                config.vanillaMarkerScale
+            } else {
+                config.playerHeadScale
+            }
+            val ttr = Transformation() * tr.scale * headScale.double
 
             if (config.mapVanillaMarker && (player.isPlayer || name == MC.thePlayer.name)) {
-                nvg.drawRoundedTexture(
+                nvg.drawRoundedImage(
                     vg,
-                    cache["marker"],
-                    MC.textureManager.getTexture(ResourceLocation("funnymap", "marker.png")).glTextureId,
+                    awesomeMapPlayerMarker(vg),
                     0.0,
                     0.0,
                     1.0,
@@ -442,19 +447,36 @@ data class AwesomeMapWidget(
             } else {
 //                // Render black border around the player head
 //                renderRectBorder(-6.0, -6.0, 12.0, 12.0, 1.0, Color(0, 0, 0, 255))
-                nvg.drawRoundedPlayerAvatar(
-                    vg,
-                    cache[player.uuid],
-                    MC.textureManager.getTexture(player.skin).glTextureId,
-                    hat = true,
-                    scaleHat = true,
-                    ttr posX -6.0,
-                    ttr posY -6.0,
-                    ttr size 12.0,
-                    ttr size 12.0,
-                    mapAlpha,
-                    ttr size config.playerHeadRadius.double,
-                )
+                if (!config.mapVanillaMarkerTeammates || (player.isPlayer && name == MC.thePlayer.name)) {
+                    nvg.drawRoundedPlayerAvatar(
+                        vg,
+                        cache[player.uuid],
+                        MC.textureManager.getTexture(player.skin).glTextureId,
+                        hat = true,
+                        scaleHat = true,
+                        ttr posX -6.0,
+                        ttr posY -6.0,
+                        ttr size 12.0,
+                        ttr size 12.0,
+                        mapAlpha,
+                        ttr size config.playerHeadRadius.double,
+                    )
+                } else {
+                    nvg.drawRoundedImage(
+                        vg,
+                        awesomeMapTeammateMarker(vg),
+                        0.0,
+                        0.0,
+                        1.0,
+                        1.0,
+                        ttr posX -6.0,
+                        ttr posY -6.0,
+                        ttr size 12.0,
+                        ttr size 12.0,
+                        mapAlpha,
+                        ttr size 0.0,
+                    )
+                }
             }
 
             // Handle player names

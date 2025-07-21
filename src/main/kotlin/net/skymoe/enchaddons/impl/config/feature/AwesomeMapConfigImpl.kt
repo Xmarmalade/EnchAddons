@@ -112,12 +112,20 @@ class AwesomeMapConfigImpl :
     override var playerHeads = 0
 
     @Switch(
-        name = "Vanilla Head Marker",
+        name = "Self Vanilla Head Marker",
         description = "Uses the vanilla head marker for yourself.",
         category = "Map",
         subcategory = "Tweaks",
     )
     override var mapVanillaMarker = false
+
+    @Switch(
+        name = "Teammates Vanilla Head Marker",
+        description = "Uses the vanilla head marker for teammates.",
+        category = "Map",
+        subcategory = "Tweaks",
+    )
+    override var mapVanillaMarkerTeammates = false
 
     @Switch(
         name = "Clip Map",
@@ -136,6 +144,16 @@ class AwesomeMapConfigImpl :
         max = 2F,
     )
     override var textScale = 0.75f
+
+    @Slider(
+        name = "Vanilla Marker Scale",
+        description = "Scale of vanilla marker relative to map size.",
+        category = "Map",
+        subcategory = "Size",
+        min = 0F,
+        max = 2F,
+    )
+    override var vanillaMarkerScale = 1f
 
     @Slider(
         name = "Player Heads Scale",

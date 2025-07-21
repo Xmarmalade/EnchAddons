@@ -2,6 +2,7 @@ package net.skymoe.enchaddons.feature.awesomemap
 
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import net.skymoe.enchaddons.api.setDefault
 import net.skymoe.enchaddons.event.RegistryEventDispatcher
@@ -16,6 +17,10 @@ import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.*
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Location
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.MapUtils
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.RenderUtils
+import net.skymoe.enchaddons.util.ComponentBuilderScope
+import net.skymoe.enchaddons.util.LogLevel
+import net.skymoe.enchaddons.util.buildComponent
+import net.skymoe.enchaddons.util.modMessage
 import net.skymoe.enchaddons.util.scope.longrun
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.time.DurationUnit
@@ -24,7 +29,7 @@ import kotlin.time.toDuration
 val AWESOME_MAP_INFO = featureInfo<AwesomeMapConfig>("awesome_map", "Awesome Map")
 
 object AwesomeMap : FeatureBase<AwesomeMapConfig>(AWESOME_MAP_INFO) {
-    val scope = CoroutineScope(EmptyCoroutineContext)
+    val scope = CoroutineScope(SupervisorJob())
     private var runningTick = atomic(false)
 
     override fun registerEvents(dispatcher: RegistryEventDispatcher) {
@@ -57,6 +62,11 @@ object AwesomeMap : FeatureBase<AwesomeMapConfig>(AWESOME_MAP_INFO) {
                             Dungeon.onTick()
 //                        GuiRenderer.onTick()
                             Location.onTick()
+                        } catch (e: Exception){
+                            modMessage(buildComponent{
+                                "DungeonMap thread error. More info in logs.".red
+                            }, LogLevel.ERROR)
+                            e.printStackTrace()
                         } finally {
                             runningTick.value = false
                         }

@@ -4,6 +4,7 @@ import net.skymoe.enchaddons.feature.awesomemap.AwesomeMap
 import net.skymoe.enchaddons.feature.ensure
 import net.skymoe.enchaddons.feature.ensureEnabled
 import net.skymoe.enchaddons.feature.ensureSkyBlockMode
+import net.skymoe.enchaddons.impl.cache.getImageLoader
 import net.skymoe.enchaddons.impl.config.EnchAddonsConfig
 import net.skymoe.enchaddons.impl.config.feature.AwesomeMapConfigImpl
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Location
@@ -43,3 +44,6 @@ object AwesomeMapHUD : FeatureHUDBase<AwesomeMapConfigImpl, AwesomeMap>(AwesomeM
         )
     }
 }
+
+val awesomeMapPlayerMarker = getImageLoader("awesomemap/marker.png")
+val awesomeMapTeammateMarker = getImageLoader("awesomemap/marker_teammate.png")

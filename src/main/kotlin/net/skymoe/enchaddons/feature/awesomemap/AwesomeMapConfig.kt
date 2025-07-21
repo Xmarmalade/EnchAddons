@@ -14,9 +14,11 @@ interface AwesomeMapConfig : FeatureConfig {
     val mapHideInBoss: Boolean
     val playerHeads: Int
     val mapVanillaMarker: Boolean
+    val mapVanillaMarkerTeammates: Boolean
     val mapClip: Boolean
 
     val textScale: Float
+    val vanillaMarkerScale: Float
     val playerHeadScale: Float
     val playerNameScale: Float
 

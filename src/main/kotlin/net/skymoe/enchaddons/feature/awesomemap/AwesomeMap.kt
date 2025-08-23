@@ -19,6 +19,7 @@ import net.skymoe.enchaddons.impl.feature.awesomemap.utils.MapUtils
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.RenderUtils
 import net.skymoe.enchaddons.util.ComponentBuilderScope
 import net.skymoe.enchaddons.util.LogLevel
+import net.skymoe.enchaddons.util.MC
 import net.skymoe.enchaddons.util.buildComponent
 import net.skymoe.enchaddons.util.modMessage
 import net.skymoe.enchaddons.util.scope.longrun
@@ -62,10 +63,13 @@ object AwesomeMap : FeatureBase<AwesomeMapConfig>(AWESOME_MAP_INFO) {
                             Dungeon.onTick()
 //                        GuiRenderer.onTick()
                             Location.onTick()
-                        } catch (e: Exception){
-                            modMessage(buildComponent{
-                                "DungeonMap thread error. More info in logs.".red
-                            }, LogLevel.ERROR)
+                        } catch (e: Exception) {
+                            modMessage(
+                                buildComponent {
+                                    "DungeonMap thread error. More info in logs.".red
+                                },
+                                LogLevel.ERROR,
+                            )
                             e.printStackTrace()
                         } finally {
                             runningTick.value = false
@@ -173,6 +177,15 @@ object AwesomeMap : FeatureBase<AwesomeMapConfig>(AWESOME_MAP_INFO) {
                     setDefault()
                     this["time"] = event.timeElapsed.toDuration(DurationUnit.SECONDS)
                 }
+                MC.thePlayer.sendChatMessage("/pc mimic killed")
+            }
+
+            register<AwesomeMapEvent.PrinceKilled> { event ->
+                config.notification.onPrinceKilled(logger) {
+                    setDefault()
+                    this["time"] = event.timeElapsed.toDuration(DurationUnit.SECONDS)
+                }
+                MC.thePlayer.sendChatMessage("/pc prince killed")
             }
         }
     }

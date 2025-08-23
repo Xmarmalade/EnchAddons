@@ -16,7 +16,7 @@ import net.skymoe.enchaddons.util.math.Vec2D
 
 object AwesomeMapHUD : FeatureHUDBase<AwesomeMapConfigImpl, AwesomeMap>(AwesomeMap, { config.hud }) {
     override val width = 128.0
-    override val height get() = if (config.mapShowRunInformation) 146.0 else 128.0
+    override val height get() = if (config.mapShowRunInformation) 155.0 else 128.0
 
     private val cache = NanoVGImageCache()
 

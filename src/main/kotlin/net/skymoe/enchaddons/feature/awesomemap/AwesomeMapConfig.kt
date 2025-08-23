@@ -46,6 +46,7 @@ interface AwesomeMapConfig : FeatureConfig {
     val scoreSecrets: Int
     val scoreCrypts: Boolean
     val scoreMimic: Boolean
+    val scorePrince: Boolean
     val scoreDeaths: Boolean
     val scorePuzzles: Int
 
@@ -54,6 +55,7 @@ interface AwesomeMapConfig : FeatureConfig {
     val runInformationSecrets: Int
     val runInformationCrypts: Boolean
     val runInformationMimic: Boolean
+    val runInformationPrince: Boolean
     val runInformationDeaths: Boolean
 
     val teamInfo: Boolean
@@ -74,4 +76,5 @@ interface Notification {
     val onScore270: NotificationOption
     val onScore300: NotificationOption
     val onMimicKilled: NotificationOption
+    val onPrinceKilled: NotificationOption
 }

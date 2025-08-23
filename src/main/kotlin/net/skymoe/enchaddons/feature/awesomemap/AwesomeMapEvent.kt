@@ -18,4 +18,8 @@ sealed interface AwesomeMapEvent : Event {
     data class MimicKilled(
         override val timeElapsed: Int,
     ) : AwesomeMapEvent
+
+    data class PrinceKilled(
+        override val timeElapsed: Int,
+    ) : AwesomeMapEvent
 }

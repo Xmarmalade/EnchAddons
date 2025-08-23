@@ -15,6 +15,9 @@ import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.ScoreCalcu
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Location
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Utils.equalsOneOf
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Utils.removeFormatting
+import net.skymoe.enchaddons.util.LogLevel
+import net.skymoe.enchaddons.util.modMessage
+import net.skymoe.enchaddons.util.trimStyle
 import kotlin.math.ceil
 
 /**
@@ -32,6 +35,7 @@ object RunInformation {
         get() = (secretsFound / (secretPercentage + 0.0001f) + 0.5).toInt()
     var minSecrets = 0
     var mimicKilled = false
+    var princeKilled = false
     private var completedRooms = 0
     val completedRoomsPercentage
         get() =
@@ -61,6 +65,7 @@ object RunInformation {
         secretsFound = 0
         secretPercentage = 0f
         mimicKilled = false
+        princeKilled = false
         completedRooms = 0
         bloodDone = false
         clearedPercentage = 0f
@@ -100,11 +105,21 @@ object RunInformation {
     }
 
     fun onChat(event: ChatEvent) {
-        if (mimicKilled) return
+        if (mimicKilled && princeKilled) return
+        if (!princeKilled && Regex("A Prince falls\\. \\+1 Bonus Score").matches(event.message.trimStyle)) {
+            MimicDetector.setPrinceKilled()
+        }
         if (event.message.startsWith("Party > ") || (event.message.contains(":") && !event.message.contains(">"))) {
-            listOf("\$SKYTILS-DUNGEON-SCORE-MIMIC\$", "mimic dead", "mimic killed").forEach {
+            listOf("Mimic Killed!", "\$SKYTILS-DUNGEON-SCORE-MIMIC\$", "mimic dead", "mimic killed").forEach {
                 if (event.message.contains(it, true)) {
                     mimicKilled = true
+                    return
+                }
+            }
+
+            listOf("Prince Killed!", "prince dead", "prince killed").forEach {
+                if (event.message.contains(it, true)) {
+                    princeKilled = true
                     return
                 }
             }

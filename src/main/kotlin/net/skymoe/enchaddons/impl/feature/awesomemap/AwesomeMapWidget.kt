@@ -422,11 +422,12 @@ data class AwesomeMapWidget(
 
             // Apply scaling
             nvg.scale(vg, Vec2D(1 / tr.scale, 1 / tr.scale))
-            val headScale = if (config.mapVanillaMarker && (player.isPlayer || name == MC.thePlayer.name)) {
-                config.vanillaMarkerScale
-            } else {
-                config.playerHeadScale
-            }
+            val headScale =
+                if (config.mapVanillaMarker && (player.isPlayer || name == MC.thePlayer.name)) {
+                    config.vanillaMarkerScale
+                } else {
+                    config.playerHeadScale
+                }
             val ttr = Transformation() * tr.scale * headScale.double
 
             if (config.mapVanillaMarker && (player.isPlayer || name == MC.thePlayer.name)) {
@@ -531,7 +532,9 @@ data class AwesomeMapWidget(
         val ttr = tr + Vec2D(64.0, 130.0)
         val lines = ScoreElement.runInformationLines()
         val lineOne = lines.takeWhile { it != "split" }.joinToString(separator = "  ")
-        val lineTwo = lines.takeLastWhile { it != "split" }.joinToString(separator = "  ")
+        val remainingLines = lines.dropWhile { it != "split" }.drop(1)
+        val lineTwo = remainingLines.takeWhile { it != "split" }.joinToString(separator = "  ")
+        val lineThree = remainingLines.dropWhile { it != "split" }.drop(1).joinToString(separator = "  ")
         nvg.drawTextSegments(
             vg,
             lineOne.toStyledSegments(),
@@ -548,6 +551,17 @@ data class AwesomeMapWidget(
             lineTwo.toStyledSegments(),
             ttr posX 0.0,
             ttr posY 9.0,
+            ttr size 8.0,
+            fontSemiBold(),
+            color = 0xFFFFFFFF.int alphaScale mapAlpha,
+            anchor = Vec2D(0.5, 0.0),
+            shadow = Vec2D(1 / 16.0, 1 / 16.0) to 0.25,
+        )
+        nvg.drawTextSegments(
+            vg,
+            lineThree.toStyledSegments(),
+            ttr posX 0.0,
+            ttr posY 18.0,
             ttr size 8.0,
             fontSemiBold(),
             color = 0xFFFFFFFF.int alphaScale mapAlpha,

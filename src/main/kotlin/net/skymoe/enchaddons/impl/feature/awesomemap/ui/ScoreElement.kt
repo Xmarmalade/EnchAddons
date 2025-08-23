@@ -62,12 +62,18 @@ class ScoreElement {
                 list.add(getCrypts())
             }
 
+            if (AwesomeMap.config.runInformationDeaths) {
+                list.add(getDeaths())
+            }
+
+            list.add("split")
+
             if (AwesomeMap.config.runInformationMimic) {
                 list.add(getMimic())
             }
 
-            if (AwesomeMap.config.runInformationDeaths) {
-                list.add(getDeaths())
+            if (AwesomeMap.config.runInformationPrince) {
+                list.add(getPrince())
             }
 
             return list
@@ -150,6 +156,30 @@ class ScoreElement {
                         "§c${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textMinimizedMimicNo}"
                     } else {
                         "§c${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textMimicNo}"
+                    }
+                }
+            return line
+        }
+
+        private fun getPrince(minimized: Boolean = false): String {
+            var line =
+                if (minimized) {
+                    "§7${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textMinimizedPrince}: "
+                } else {
+                    "§7${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textPrince}: "
+                }
+            line +=
+                if (RunInformation.princeKilled) {
+                    if (minimized) {
+                        "§a${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textMinimizedPrinceYes}"
+                    } else {
+                        "§a${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textPrinceYes}"
+                    }
+                } else {
+                    if (minimized) {
+                        "§c${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textMinimizedPrinceNo}"
+                    } else {
+                        "§c${EnchAddonsConfig.dungeonConfig.awesomeMapConfig.textPrinceNo}"
                     }
                 }
             return line

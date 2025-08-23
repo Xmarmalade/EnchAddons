@@ -2,35 +2,23 @@ package net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon
 
 import net.minecraft.entity.Entity
 import net.minecraft.entity.monster.EntityZombie
+import net.minecraft.item.ItemSkull
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntityChest
 import net.minecraft.util.BlockPos
 import net.skymoe.enchaddons.EA
 import net.skymoe.enchaddons.feature.awesomemap.AwesomeMapEvent
 import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.ScanUtils.getRoomFromPos
+import net.skymoe.enchaddons.util.LogLevel
 import net.skymoe.enchaddons.util.MC
+import net.skymoe.enchaddons.util.modMessage
+import java.util.*
+
+const val MIMIC_SKULL_ID = "ae55953f-605e-3c71-a813-310c028de150"
 
 object MimicDetector {
     var mimicOpenTime = 0L
     var mimicPos: BlockPos? = null
-
-    fun checkMimicDead() {
-        if (RunInformation.mimicKilled) return
-        if (mimicOpenTime == 0L) return
-        if (System.currentTimeMillis() - mimicOpenTime < 750) return
-        if (MC.thePlayer.getDistanceSq(mimicPos) < 400) {
-            if (MC.theWorld.loadedEntityList.none {
-                    it is EntityZombie &&
-                        it.isChild &&
-                        it
-                            .getCurrentArmor(3)
-                            ?.getSubCompound("SkullOwner", false)
-                            ?.getString("Id") == "bcb486a4-0cb5-35db-93f0-039fbdde03f0"
-                }
-            ) {
-                setMimicKilled()
-            }
-        }
-    }
 
     fun setMimicKilled() {
         RunInformation.mimicKilled = true
@@ -39,14 +27,43 @@ object MimicDetector {
             .also(EA.eventDispatcher)
     }
 
+    fun setPrinceKilled() {
+        RunInformation.princeKilled = true
+        AwesomeMapEvent
+            .PrinceKilled(RunInformation.timeElapsed)
+            .also(EA.eventDispatcher)
+    }
+
     fun isMimic(entity: Entity): Boolean {
-        if (entity is EntityZombie && entity.isChild) {
-            for (i in 0..3) {
-                if (entity.getCurrentArmor(i) != null) return false
+        if (entity !is EntityZombie || !entity.isChild) return false
+
+        val isInstantKill =
+            entity.getCurrentArmor(3)?.let { item ->
+                if (item.item !is ItemSkull || !item.hasTagCompound()) {
+                    return@let false
+                }
+                item.tagCompound?.run {
+                    if (!hasKey("SkullOwner")) {
+                        return@run false
+                    }
+                    val skull = getCompoundTag("SkullOwner")
+                    if (!skull.hasKey("Id")) {
+                        return@run false
+                    }
+                    val uuid = skull.getString("Id")
+                    uuid == MIMIC_SKULL_ID
+                }
+            } ?: false
+
+        val isNormalKill =
+            (0..3).all { i ->
+                entity.getCurrentArmor(i) === null
             }
-            return true
+
+        if (isInstantKill || isNormalKill) {
+            modMessage("Mimic was killed ${if (isInstantKill) "INSTANTLY" else ""}.", LogLevel.INFO)
         }
-        return false
+        return isInstantKill || isNormalKill
     }
 
     fun findMimic(): String? {

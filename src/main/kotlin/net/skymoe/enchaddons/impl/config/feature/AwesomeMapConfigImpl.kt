@@ -9,6 +9,7 @@ import net.skymoe.enchaddons.feature.awesomemap.Notification
 import net.skymoe.enchaddons.impl.config.AdvancedHUD
 import net.skymoe.enchaddons.impl.config.ConfigImpl
 import net.skymoe.enchaddons.impl.config.adapter.Extract
+import net.skymoe.enchaddons.impl.config.announcement.DisclaimerAtOwnRisk
 import net.skymoe.enchaddons.impl.config.gui.GUIBackground
 import net.skymoe.enchaddons.impl.config.impl.NotificationOptionImpl
 
@@ -534,6 +535,13 @@ class AwesomeMapConfigImpl :
     override var scoreMimic = false
 
     @Switch(
+        name = "Prince",
+        category = "Score",
+        subcategory = "Elements",
+    )
+    override var scorePrince = false
+
+    @Switch(
         name = "Deaths",
         category = "Score",
         subcategory = "Elements",
@@ -586,6 +594,13 @@ class AwesomeMapConfigImpl :
     override var runInformationMimic = true
 
     @Switch(
+        name = "Prince",
+        category = "Run Information",
+        subcategory = "Elements",
+    )
+    override var runInformationPrince = true
+
+    @Switch(
         name = "Deaths",
         category = "Run Information",
         subcategory = "Elements",
@@ -621,6 +636,13 @@ class AwesomeMapConfigImpl :
     var textMimic = "Mimic"
 
     @Text(
+        name = "Prince",
+        category = "Placeholder",
+        subcategory = "Full",
+    )
+    var textPrince = "Prince"
+
+    @Text(
         name = "Mimic Yes",
         category = "Placeholder",
         subcategory = "Full",
@@ -633,6 +655,20 @@ class AwesomeMapConfigImpl :
         subcategory = "Full",
     )
     var textMimicNo = "✘"
+
+    @Text(
+        name = "Prince Yes",
+        category = "Placeholder",
+        subcategory = "Full",
+    )
+    var textPrinceYes = "✔"
+
+    @Text(
+        name = "Prince No",
+        category = "Placeholder",
+        subcategory = "Full",
+    )
+    var textPrinceNo = "✔"
 
     @Text(
         name = "Death",
@@ -677,6 +713,13 @@ class AwesomeMapConfigImpl :
     var textMinimizedMimic = "M"
 
     @Text(
+        name = "Prince",
+        category = "Placeholder",
+        subcategory = "Minimized",
+    )
+    var textMinimizedPrince = "P"
+
+    @Text(
         name = "Mimic Yes",
         category = "Placeholder",
         subcategory = "Minimized",
@@ -689,6 +732,20 @@ class AwesomeMapConfigImpl :
         subcategory = "Minimized",
     )
     var textMinimizedMimicNo = "✘"
+
+    @Text(
+        name = "Prince Yes",
+        category = "Placeholder",
+        subcategory = "Minimized",
+    )
+    var textMinimizedPrinceYes = "✔"
+
+    @Text(
+        name = "Prince No",
+        category = "Placeholder",
+        subcategory = "Minimized",
+    )
+    var textMinimizedPrinceNo = "✘"
 
     @Text(
         name = "Death",
@@ -822,6 +879,19 @@ class AwesomeMapConfigImpl :
             category = "Notification",
         )
         override var onMimicKilled: NotificationOptionImpl = NotificationOptionImpl()
+
+        @Transient
+        @Header(
+            text = "Notification On Prince Killed",
+            size = 2,
+            category = "Notification",
+        )
+        val headerOnPrinceKilled = false
+
+        @Extract(
+            category = "Notification",
+        )
+        override var onPrinceKilled: NotificationOptionImpl = NotificationOptionImpl()
     }
 
     @Extract(

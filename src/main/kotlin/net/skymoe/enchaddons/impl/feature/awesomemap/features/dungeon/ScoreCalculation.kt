@@ -6,6 +6,7 @@ import net.skymoe.enchaddons.feature.awesomemap.AwesomeMapEvent
 import net.skymoe.enchaddons.feature.config.invoke
 import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.RunInformation.completedRoomsPercentage
 import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.RunInformation.mimicKilled
+import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.RunInformation.princeKilled
 import net.skymoe.enchaddons.impl.feature.awesomemap.features.dungeon.RunInformation.secretPercentage
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.APIUtils
 import net.skymoe.enchaddons.impl.feature.awesomemap.utils.Location
@@ -65,6 +66,7 @@ object ScoreCalculation {
         var score = 0
         score += RunInformation.cryptsCount.coerceAtMost(5)
         if (mimicKilled) score += 2
+        if (princeKilled) score += 1
         if (paul) score += 10
         return score
     }

@@ -7,6 +7,8 @@ import net.skymoe.enchaddons.impl.config.ConfigCategory
 import net.skymoe.enchaddons.impl.config.ConfigImpl
 import net.skymoe.enchaddons.impl.config.feature.AwesomeMapConfigImpl
 import net.skymoe.enchaddons.impl.config.feature.FastDraftConfigImpl
+import net.skymoe.enchaddons.impl.config.feature.PartyFinderStatsConfigImpl
+import net.skymoe.enchaddons.impl.config.feature.AutoKickConfigImpl
 import kotlin.reflect.KClass
 
 class DungeonConfig :
@@ -20,6 +22,12 @@ class DungeonConfig :
 
     @SubConfig
     var awesomeMapConfig = AwesomeMapConfigImpl()
+
+    @SubConfig
+    var partyFinderStats = PartyFinderStatsConfigImpl()
+
+    @SubConfig
+    var autoKick = AutoKickConfigImpl()
 
     init {
         initializeMembers()

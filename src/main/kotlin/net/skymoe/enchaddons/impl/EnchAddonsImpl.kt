@@ -9,7 +9,9 @@ import net.skymoe.enchaddons.feature.dungeon.fastdraft.FastDraft
 import net.skymoe.enchaddons.feature.dynamickeybind.DynamicKeyBinding
 import net.skymoe.enchaddons.feature.dynamicspot.DynamicSpot
 import net.skymoe.enchaddons.feature.invincibilitytimer.InvincibilityTimer
+import net.skymoe.enchaddons.feature.dungeon.autokick.AutoKick
 import net.skymoe.enchaddons.feature.teamspeakconnect.TeamSpeakConnect
+import net.skymoe.enchaddons.feature.dungeon.partyfinder.PartyFinderStats
 import net.skymoe.enchaddons.getLogger
 import net.skymoe.enchaddons.impl.api.APIImpl
 import net.skymoe.enchaddons.impl.cache.ResourceCacheImpl
@@ -81,6 +83,8 @@ class EnchAddonsImpl : EnchAddons {
         TeamSpeakConnectHUD
 
         FastDraft
+        PartyFinderStats
+        AutoKick
 
         AwesomeMap
         AwesomeMapHUD
